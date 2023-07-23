@@ -5,112 +5,73 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 -->
 <html>
     <head>
-        <title>My to do list</title>
+        <link rel="shortcut icon" href="#" />
+        <title>Météo</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
         <style>
-            p.a{visibility: hidden}
+            div {
+  margin-left: auto;
+  margin-right: auto;
+  width: 9em
+}
+div.a {
+  margin-left: auto;
+  margin-right: auto;
+  width: 7em
+}
+h1 {
+  margin-left: auto;
+  margin-right: auto;
+  width: 5em
+}
+            html {
+/* L'image est positionnée en fond et est centrée */
+background: url(fondecran2.jpg) no-repeat center center fixed;
+/* Ajout de la propriété avec les préfixes pour tous les moteurs de rendu */
+-webkit-background-size: cover;
+-moz-background-size: cover;
+-o-background-size: cover;
+background-size: cover;
+}
+    
+
         </style>
         <script>
-            function Check1(){
-                if(document.getElementById("todo1").checked){
-                    alert("Bon travail !");
-                    document.getElementById("t1").style.color = "grey";
-                    document.getElementById("t1").style.textDecoration = " line-through" ;
-                }
-                if(!document.getElementById("todo1").checked){
-                    document.getElementById("t1").style.color = "black";
-                    document.getElementById("t1").style.textDecoration = "" ;
-                }
+            
+            if(navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(maPosition);
             }
-            function Update1(){
-                name = prompt("What is your task?", "");
-                document.getElementById("th1").innerHTML = name;
+            else {
+                alert("Veuillez activer la localisation");
             }
-            function Check2(){
-                if(document.getElementById("todo2").checked){
-                    alert("Bon travail !");
-                    document.getElementById("t2").style.color = "grey";
-                    document.getElementById("t2").style.textDecoration = " line-through" ;
-                }
-                if(!document.getElementById("todo2").checked){
-                    document.getElementById("t2").style.color = "black";
-                    document.getElementById("t2").style.textDecoration = "" ;
-                }
+            function maPosition(position) {
+                var la = position.coords.latitude;
+                var lo = position.coords.longitude;
+                const request = new Request("https://api.openweathermap.org/data/2.5/weather?lat="+la+"&lon="+lo+"&appid=0af297cf8536c35a18a11cffb360bb40&lang=fr&units=metric");
+                window.fetch(request)
+                         .then(res => res.json())
+                         .then(e => {
+                             document.getElementById("temp").innerHTML =  e.main.temp +"°C";
+                     document.getElementById("ville").innerHTML = e.name;
+                     document.getElementById("weather").innerHTML = e.weather[0].description;
+                     document.getElementById("icon").innerHTML =" <img src = \"https://openweathermap.org/img/wn/" + e.weather[0].icon + "@2x.png\" width=\'50px\'>";
+                      
+                },);
             }
-            function Update2(){
-                name = prompt("What is your task?", "");
-                document.getElementById("th2").innerHTML = name;
-            }
-            function Check3(){
-                if(document.getElementById("todo3").checked){
-                    alert("Bon travail !");
-                    document.getElementById("t3").style.color = "grey";
-                    document.getElementById("t3").style.textDecoration = " line-through" ;
-                }
-                if(!document.getElementById("todo3").checked){
-                    document.getElementById("t3").style.color = "black";
-                    document.getElementById("t3").style.textDecoration = "" ;
-                }
-            }
-            function Update3(){
-                name = prompt("What is your task?", "");
-                document.getElementById("th3").innerHTML = name;
-            }
-            function Check4(){
-                if(document.getElementById("todo4").checked){
-                    alert("Bon travail !");
-                    document.getElementById("t4").style.color = "grey";
-                    document.getElementById("t4").style.textDecoration = " line-through" ;
-                }
-                if(!document.getElementById("todo4").checked){
-                    document.getElementById("t4").style.color = "black";
-                    document.getElementById("t4").style.textDecoration = "" ;
-                }
-            }
-            function Update4(){
-                name = prompt("What is your task?", "");
-                document.getElementById("th4").innerHTML = name;
-            }
-            var count = 0;
-            function Add(){
-                document.getElementById("t2").style.visibility = 'visible';
-                if(count==1){
-                    document.getElementById("t3").style.visibility = 'visible';
-                }
-                
-                if(count==2){
-                    document.getElementById("t4").style.visibility = 'visible';
-                }
-                count++;
-                
-            }
-        </script>
+                       
+                //document.getElementById("th2").innerHTML = "La température est de °C";
+                //alert("true");
+            </script>
     </head>
     <body>
-        <div>
-            <h1>My To Do List</h1>
-            <p id="t1">
-                <input type="checkbox" value ="Input your task" id="todo1" onchange = "Check1()" ><label id="th1">Input your task</label>
-                <input  type="button" value="update your task" onclick="Update1()">
-
-            </p>
-            <p id="t2" class="a">
-                <input type="checkbox" value ="Input your task" id="todo2" onchange = "Check2()" ><label id="th2">Input your task</label>
-                <input  type="button" value="update your task" onclick="Update2()">
-            </p>
-            <p id="t3" class="a">
-                <input type="checkbox" value ="Input your task" id="todo3" onchange = "Check3()" ><label id="th3">Input your task</label>
-                <input  type="button" value="update your task" onclick="Update3()">
-            </p>
-            <p id ="t4" class="a">
-                <input type="checkbox" value ="Input your task" id="todo4" onchange = "Check4()" ><label id="th4">Input your task</label>
-                <input  type="button" value="update your task" onclick="Update4()">
-            </p>
-            <p>
-                <input type="button" value="+"  onclick="Add()">
-            </p>
-            
+        <h1 id="ville">Veuillez activer la localisation
+        </h1>
+        <div class='a' id='icon' ></div>
+        <div  id="weather">
         </div>
+        <h1 id="temp">
+        </h1>
     </body>
 </html>
